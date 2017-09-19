@@ -1,0 +1,13 @@
+extends layout
+
+block breadcrumb
+
+
+block content
+  ul.timeline-container
+    for user in users
+      li
+        .track-grid-member-name= user.name
+        .track-grid-member-handle= user.handle
+        .track-grid-member-avatar
+          img(src=user.avatarUrl)
