@@ -1,3 +1,13 @@
 .timeline-container
   display: flex
   flex-direction: row
+
+.track
+  &-grid-member-name, &-grid-member-handle
+    white-space: nowrap
+    overflow: hidden
+    text-overflow: ellipsis
+
+  &-grid-member-avatar > img
+    height: 10vh
+    min-width: 10vh
