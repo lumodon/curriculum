@@ -118,11 +118,26 @@ module.exports = app => {
         })
     }
 
-    response.renderMarkdownFile = function(relativeFilePath=request.path){
+    response.markdownFileToHTML = function(relativeFilePath=request.path){
       const absoluteFilePath = path.resolve(__dirname, '..', '.'+relativeFilePath)
-      fs.readFile(absoluteFilePath)
+      return fs.readFile(absoluteFilePath)
         .then(file => {
-          response.renderMarkdown(file.toString())
+          return renderMarkdown(file.toString())
+        })
+    }
+
+    response.renderMarkdownFileToHTML = function(relativeFilePath=request.path, viewParams, viewPath){
+      response.markdownFileToHTML(relativeFilePath)
+        .then(markdownHTML => {
+          viewParams.content = markdownHTML
+          response.render(viewPath, viewParams)
+        })
+    }
+
+    response.renderMarkdownFile = function(relativeFilePath=request.path){
+      response.markdownFileToHTML(relativeFilePath)
+        .then(markdownHTML => {
+          response.renderMarkdown(markdownHTML)
         })
         .catch(error => {
           if (error.message.includes('ENOENT')){

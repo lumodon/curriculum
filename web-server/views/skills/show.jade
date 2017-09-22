@@ -1,10 +1,13 @@
 extends ../layout
 
 block content
+  ul.markdown-page-options.list-inline
+    li
+      a(href=sourceUrl target="_blank") View On GitHub
+    li
+      a(href=editeUrl target="_blank") Improve This Page
 
-  h1.skill-show-page-heading
-    input.skill-checkbox(type="checkbox", data-label=skill.id, checked=checked)
-    span !{renderSkill(skill)}
+  .skill-markdown !{content}
 
   h2 Modules
   ul

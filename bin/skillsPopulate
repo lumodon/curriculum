@@ -1,0 +1,99 @@
+#!/usr/bin/env node
+
+const fs = require('fs')
+
+const digest = require('../digest')
+
+function fsPromise(funcName, params) {
+  return new Promise((resolve, reject) => {
+    fs[funcName](...params, (error, result) => {
+      if (error) {
+        reject(error)
+        return
+      }
+      resolve(result)
+    })
+  })
+}
+
+function makeDirectories() {
+  digest()
+    .then(digestInfo => Object.keys(digestInfo.skills))
+    .then(skillsArray => {
+      const arrOfDirs = []
+      skillsArray.forEach(skill => {
+        skill = skill.replace(/[\'\,\/]/g, '-')
+        arrOfDirs.push(fsPromise('mkdir', ['./skills/' + skill]))
+      })
+    })
+}
+
+function main(args) {
+  if (args.length <= 2 || args.length > 3) {
+    console.log(
+      `Not enough arguments.\n` +
+      `Usage: ./bin/${args[1].match(/[^\/]*$/g)[0]} <dirs | populate>\n\n` +
+      `dirs: Make empty directories based on module folder names\n` +
+      `populate: Create sample README.md files in each skill folder\n`
+    )
+    return
+  }
+
+  ({
+    'dirs': makeDirectories,
+    'skills': createSkillsListTest,
+    'populate': createSkillsList,
+  })[args[2]]()
+}
+
+let skillsId = []
+let skillsName = []
+
+function createSkillsListTest() {
+  digest()
+  .then(digestInfo => {
+    const digestSkills = digestInfo.skills
+    for(let skill in digestSkills) {
+      skillsId.push(skill)
+      skillsName.push(digestSkills[skill].name)
+    }
+  })
+  .catch(error => {
+    console.error('Something went wrong', error)
+  })
+}
+
+function createSkillsList() {
+  digest()
+  .then(digestInfo => {
+    const digestSkills = digestInfo.skills
+    for(let skill in digestSkills) {
+      skillsId.push(skill)
+      skillsName.push(digestSkills[skill].name)
+    }
+    return createSampleFiles(skillsId, skillsName)
+  })
+  .catch(error => {
+    console.error('Something went wrong', error)
+  })
+}
+
+function createSampleFiles(skillsId, skillsName) {
+  console.log('skill Title length ---', skillsId.length)
+  for(let i = 0; i < skillsId.length; i++){
+    const sampleData =
+      `# ${skillsName[i]}\n\n` +
+      `_description tbd_\n\n` +
+      `## Resources\n\n` +
+      `### Reading\n\n` +
+      `_nothing here yet, please add something_\n\n` +
+      `### Watching\n\n` +
+      `_nothing here yet, please add something_\n`
+
+    fsPromise('writeFile', [`./skills/${skillsId[i]}.md`, sampleData])
+  }
+  return true
+}
+
+
+main(process.argv)
