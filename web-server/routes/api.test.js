@@ -16,25 +16,13 @@ whenLoggedIn(function() {
     })
   })
 
-  // describe.only('/api/skill-checks/set', function(){
-  //   it('should respond with a json of all checked skills', function(){
-  //     return this
-  //       .post('/api/skill-checks/set')
-  //       .then(response => {
-  //         console.log('what is the response?',response)
-  //         expect(response).to.have.status(200)
-  //         expect(response)
-  //       }).catch(console.error)
-  //   })
-  // })
-
   describe.only('Error routes', function(){
     it('should respond with a json of the error stack', function(){
       return this
         .get('/api/fluffy')
         .catch(error => {
           expect(error).to.have.status(404)
-          expect(error)
+          expect(error.response.text).to.equal('<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n<title>Error</title>\n</head>\n<body>\n<pre>Cannot GET /api/fluffy</pre>\n</body>\n</html>\n')
         })
     })
   })
