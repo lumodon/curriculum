@@ -6,6 +6,15 @@ module.exports = class WebServerSession {
     this.agent = agent
   }
 
+  stub(method, path, callback){
+    console.log('Stub has loaded')
+    return this.agent[method](path, callback)
+
+    app.get('/api', (response, resolve) => {
+      
+    })
+  }
+
   get(path, query){
     return this.agent
       .get(path)

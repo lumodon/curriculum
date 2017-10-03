@@ -57,7 +57,7 @@ beforeEach(function(){
     )
   }
 
-  'get post put patch delete'.split(' ').forEach(method => {
+  'get post put stub patch delete'.split(' ').forEach(method => {
     this[method] = function(...args){
       return this.webServerSession()[method](...args)
     }
