@@ -7,12 +7,14 @@ process.env.DATABASE_URL = process.env.DATABASE_URL || 'postgres://localhost:543
 process.env.HUBSPOT_API_KEY = process.env.HUBSPOT_API_KEY || 'FAKE_HUBSPOST_API_KEY'
 process.env.JWT_PUBLIC_KEY = 'FAKE_PUBLIC_KEY'
 
+const chaiAsPromised = require("chai-as-promised");
 const chaiHttp = require('chai-http')
 global.chai = require('chai')
 global.expect = chai.expect
 const webServer = require('./web-server')
 
 chai.use(chaiHttp)
+chai.use(chaiAsPromised)
 
 let webServerAgent = null
 
