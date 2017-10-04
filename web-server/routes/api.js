@@ -9,9 +9,13 @@ module.exports = app => {
 
   app.post('/api/skill-checks/status', (request, response, next) => {
     const userId = request.user.id
+    console.log('/api/skill-checks/status:::do we get a user.id???', userId)
     const { labels } = request.body
+    console.log('/api/skill-checks/status:::: labels',labels)
+    console.log('/api/skill-checks/status:::: userId',userId)
     queries.getChecksForUserAndLabels({userId, labels})
       .then(checks => {
+        console.log('/api/skill-checks/status:::: checks', checks)
         const map = {}
         labels.forEach(label => {
           map[label] = !!checks[label]
@@ -23,6 +27,7 @@ module.exports = app => {
 
   app.post('/api/skill-checks/set', (request, response, next) => {
     const user_id = request.user.id
+    console.log('/api/skill-checks/set:::do we get a user.id???', user_id)
     const { label, checked } = request.body
     const referrer = request.header('Referer');
     commands.setSkillCheck({user_id, label, checked, referrer})
