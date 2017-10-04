@@ -34,6 +34,7 @@ whenLoggedIn(function() {
         .get('/api/fluffy')
         .catch(error => {
           expect(error).to.have.status(404)
+          expect(error.response.text).to.equal('<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n<title>Error</title>\n</head>\n<body>\n<pre>Cannot GET /api/fluffy</pre>\n</body>\n</html>\n')
         })
     })
   })
