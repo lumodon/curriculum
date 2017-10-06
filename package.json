@@ -56,6 +56,7 @@
   "devDependencies": {
     "chai": "^4.0.2",
     "chai-http": "^3.0.0",
+    "cheerio": "^1.0.0-rc.2",
     "clean-webpack-plugin": "^0.1.16",
     "css-loader": "^0.28.4",
     "dotenv": "^4.0.0",
